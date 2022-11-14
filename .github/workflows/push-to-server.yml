@@ -1,0 +1,22 @@
+name: Push latest changes to live server
+
+on:
+  push:
+    branches: [ main ]
+      
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout latest changes
+        uses: actions/checkout@v3
+      
+      - name: Push to the server
+        uses: wlixcc/SFTP-Deploy-Action@v1.0
+        with: 
+          remote_path: '/var/www/html'
+          local_path: '.'
+          username: ${{secrets.server_username}}
+          server: ${{secrets.server_ip}}
+          ssh_private_key: "${{secrets.server_ssh_private_key}}"
